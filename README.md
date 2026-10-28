@@ -12,7 +12,9 @@
 
 **Screenwriting for practical horror filmmakers.** A desktop script and novel writer for Windows and Linux, built the way classic desktop screenwriting apps used to work, around the thing other screenwriting apps ignore: **the effects.**
 
-Made by [Splatter VHS](https://splattervhs.com), a horror filmmaker with 20+ years in practical SFX who got tired of his screenwriting software turning into a subscription.
+### Why we built it
+
+We had dozens of horror screenplays written in the old Celtx desktop app, and we wanted to keep editing them **offline**, on our own machines, without a subscription. So [Splatter VHS](https://splattervhs.com) built GORE DRAFT. It opens those old `.celtx` projects and saves them as plain files you own. Then we gave it the thing every horror script needs: a proper effects breakdown, from a filmmaker with 20+ years in practical SFX.
 
 ### ⬇ [Download the latest beta](https://github.com/splattervhs/GoreDraft/releases/latest)
 
