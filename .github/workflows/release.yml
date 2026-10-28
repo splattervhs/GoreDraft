@@ -1,9 +1,16 @@
-# Push a tag like v0.2.0 and GitHub builds the Windows installer and the
-# Linux package, then attaches them to a draft pre-release for you to publish.
+# Builds the Windows installer, Windows portable zip and Linux package, then
+# publishes them as a beta pre-release tagged with APP_VERSION (e.g. v0.2.0).
+#
+# Start a release by either:
+#   * pushing to the `release` branch, or
+#   * GitHub -> Actions -> release -> "Run workflow"
+# Bump APP_VERSION in goredraft/model.py first, or the release for that
+# version gets its files replaced.
 name: release
 
 on:
   push:
+    branches: [release]
     tags: ["v*"]
   workflow_dispatch:
 
@@ -55,15 +62,18 @@ jobs:
   release:
     needs: [windows, linux]
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
     steps:
       - uses: actions/checkout@v4
+      - id: ver
+        run: echo "v=$(python3 -c 'from goredraft.model import APP_VERSION; print(APP_VERSION)')" >> "$GITHUB_OUTPUT"
       - uses: actions/download-artifact@v4
         with: { path: out }
       - uses: softprops/action-gh-release@v2
         with:
-          draft: true
+          tag_name: v${{ steps.ver.outputs.v }}
+          target_commitish: ${{ github.sha }}
+          name: GORE DRAFT ${{ steps.ver.outputs.v }} beta
           prerelease: true
-          name: GORE DRAFT ${{ github.ref_name }} (beta)
+          make_latest: true
           body_path: BETA.md
           files: out/**/*
