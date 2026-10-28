@@ -21,6 +21,10 @@ Thanks for testing. GORE DRAFT is a screenwriting app for practical horror filmm
 
 Use **Help → Report a Problem**. It collects version info and the error log for you. Tell us what you were doing and what you expected to happen.
 
+## About AI
+
+The code behind GORE DRAFT was built with Claude, an AI coding assistant. **The app itself has no AI in it.** It never writes or suggests anything, never goes online, and your scripts stay on your computer.
+
 ## Your work is safe
 
 Projects are plain Fountain (`.fountain`) and Markdown (`.md`) files in a folder you choose. Even if this beta dies completely, your scripts open in any text editor. It's still a beta, so keep your own backups of anything important.

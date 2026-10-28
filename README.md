@@ -43,6 +43,12 @@ We had dozens of horror screenplays written in the old Celtx desktop app, and we
   <img src="docs/img/screen-cards.jpg" alt="Drag-and-drop index cards" width="49%">
 </p>
 
+## How it was made
+
+GORE DRAFT's code was built with **Claude**, an AI coding assistant. The ideas, the effects categories and the horror filmmaking knowledge come from Splatter VHS, and Claude helped write the software.
+
+**The app itself contains no AI.** It never writes, suggests, rewrites or analyses your work. It never connects to the internet, and **your scripts never leave your computer.** Nothing you write in GORE DRAFT can be used to train anything.
+
 ## Beta testers
 
 Thanks for helping. **[BETA.md](BETA.md)** covers what to try and how to report problems. The short version: in the app, use **Help → Report a Problem**. It fills in your version and error log for you.
