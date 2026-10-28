@@ -139,8 +139,17 @@ class SpellHighlighter(QSyntaxHighlighter):
         self.enabled = on
         self.rehighlight()
 
+    # element ids that are shown in capitals or are notes: never spellchecked
+    SKIP_STATES = {0, 2, 5, 6, 7}  # heading, character, transition, shot, beat
+
     def highlightBlock(self, text):
         if not self.enabled:
+            return
+        block = self.currentBlock()
+        el = block.blockFormat().property(0x100000 + 2)  # editor.ELEMENT
+        if el is None:
+            el = block.userState()
+        if el in self.SKIP_STATES:
             return
         for start, length in misspelt_ranges(text):
             self.setFormat(start, length, self.fmt)

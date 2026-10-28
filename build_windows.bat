@@ -15,7 +15,7 @@ echo Version %VER%
 python -m pip install -q -r requirements.txt pyinstaller || (echo STEP FAILED: pip & exit /b 1)
 python -m PyInstaller --noconfirm --clean --windowed --name GoreDraft --icon goredraft\icon.ico ^
   --add-data "goredraft\fonts;goredraft\fonts" --add-data "goredraft\icon.png;goredraft" ^
-  --add-data "goredraft\splash.jpg;goredraft" --collect-data spellchecker run.py || (echo STEP FAILED: pyinstaller & exit /b 1)
+  --add-data "goredraft\splash.jpg;goredraft" --add-data "goredraft\manual;goredraft\manual" --collect-data spellchecker run.py || (echo STEP FAILED: pyinstaller & exit /b 1)
 echo APP BUILT: dist\GoreDraft\GoreDraft.exe
 
 set "ISCC=%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe"

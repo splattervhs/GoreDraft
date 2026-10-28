@@ -5,8 +5,9 @@ import sys
 import time
 from pathlib import Path
 
-from PySide6.QtCore import QSettings, QSize, Qt, QTimer
-from PySide6.QtGui import QAction, QActionGroup, QFontDatabase, QIcon, QKeySequence, QPixmap
+from PySide6.QtCore import QSettings, QSize, Qt, QTimer, QUrl
+from PySide6.QtGui import (QAction, QActionGroup, QDesktopServices, QFontDatabase, QIcon,
+                           QKeySequence, QPixmap, QShortcut)
 from PySide6.QtWidgets import (QApplication, QButtonGroup, QComboBox, QDialog,
                                QDialogButtonBox, QDockWidget, QFileDialog, QFormLayout,
                                QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget,
@@ -23,6 +24,7 @@ from .panels import (BreakdownPanel, IndexCardsView, ReportsView, TitlePageView,
                      section)
 from .theme import QSS
 from . import support
+from .zen import ZEN_QSS, FocusTimer, ZenHint
 
 HERE = Path(__file__).parent
 TAB_SCRIPT, TAB_TITLE, TAB_CARDS, TAB_SCRATCH, TAB_REPORTS = range(5)
@@ -98,6 +100,7 @@ class MainWindow(QMainWindow):
         # script tab: a desk with the page centred on it
         self.page_stack = QStackedWidget()
         desk = QWidget()
+        self.desk = desk
         desk.setObjectName("DeskInner")
         dl = QHBoxLayout(desk)
         dl.setContentsMargins(0, 16, 0, 0)
@@ -182,6 +185,16 @@ class MainWindow(QMainWindow):
         self.statusBar().addWidget(self.hint, 1)
         self.statusBar().addPermanentWidget(self.stats)
 
+        # zen mode + focus timer (floating, top-level children of the window)
+        self.zen = False
+        self._zen_state = {}
+        self.focus_timer = FocusTimer(self)
+        self.focus_timer.hide()
+        self.focus_timer.phaseFinished.connect(self._phase_finished)
+        self.zen_hint = ZenHint(self)
+        self.zen_hint.hide()
+        QShortcut(QKeySequence(Qt.Key_Escape), self, activated=lambda: self.zen and self.toggle_zen())
+
         self._beat_timer = QTimer(self, singleShot=True, interval=350)
         self._beat_timer.timeout.connect(self._update_beat_and_stats)
 
@@ -190,7 +203,7 @@ class MainWindow(QMainWindow):
         self.a_new = A("&New Project", lambda: self.new_project(), QKeySequence.New)
         self.a_open = A("&Open Project…", self.open_project, QKeySequence.Open)
         self.a_save = A("&Save", self.save, QKeySequence.Save)
-        self.a_saveas = A("Save &As…", lambda: self.save(as_=True), QKeySequence.SaveAs)
+        self.a_saveas = A("Save &As…", lambda: self.save(as_=True), "Ctrl+Shift+S")
         self.a_import = A("&Import Fountain / Final Draft…", self.import_script)
         self.a_celtx = A("Import Old &Celtx (.celtx)…", self.import_celtx)
         self.a_exp_pdf = A("Export &PDF…", self.export_pdf, "Ctrl+P")
@@ -209,6 +222,11 @@ class MainWindow(QMainWindow):
         self.a_spell.setChecked(self.settings.value("spell", "true") in (True, "true"))
         self.a_spell.toggled.connect(self._toggle_spell)
         self.a_mpp = A("Minutes per Page…", self._set_minutes_per_page)
+        self.a_zen = A("Zen Mode", self.toggle_zen, "F11", "Just you and the page. Esc to leave.")
+        self.a_timer = QAction("Focus Timer", self, checkable=True)
+        self.a_timer.setShortcut("Ctrl+Shift+T")
+        self.a_timer.toggled.connect(self._show_timer)
+        self.a_manual = A("Read This Fucking Manual", self.open_manual, "F1")
 
         mb = self.menuBar()
         m = mb.addMenu("&File")
@@ -257,6 +275,9 @@ class MainWindow(QMainWindow):
         v.addAction(self.left_dock.toggleViewAction())
         v.addAction(self.right_dock.toggleViewAction())
         v.addSeparator()
+        v.addAction(self.a_zen)
+        v.addAction(self.a_timer)
+        v.addSeparator()
         v.addAction(self.a_spell)
         v.addAction(self.a_mpp)
         zm = v.addMenu("Zoom")
@@ -266,12 +287,15 @@ class MainWindow(QMainWindow):
 
         h = mb.addMenu("&Help")
         h.addAction(A("Keyboard Flow", self.show_keys))
+        h.addAction(self.a_manual)
+        h.addSeparator()
         h.addAction(A("Report a Problem…", lambda: support.report_problem(self)))
         h.addAction(A("Open Log Folder", support.open_log_folder))
         h.addSeparator()
         h.addAction(A("About GORE DRAFT", self.about))
 
         tb = QToolBar("Main")
+        self.toolbar = tb
         tb.setObjectName("MainToolbar")
         tb.setMovable(False)
         tb.setIconSize(QSize(16, 16))
@@ -299,6 +323,8 @@ class MainWindow(QMainWindow):
         tb.addWidget(self.zoom_combo)
         tb.addSeparator()
         tb.addAction(self.a_exp_pdf)
+        tb.addSeparator()
+        tb.addAction(self.a_zen)
 
     def _act(self, text, fn, key=None, tip=None):
         a = QAction(text, self)
@@ -590,7 +616,6 @@ class MainWindow(QMainWindow):
     def _refresh_outline(self):
         w = self.ed()
         self.outline.blockSignals(True)
-        self.outline.model().blockSignals(True)
         self.outline.clear()
         if isinstance(w, ScriptEdit):
             self.outline.setDragDropMode(QListWidget.InternalMove)
@@ -617,7 +642,6 @@ class MainWindow(QMainWindow):
                 it = QListWidgetItem(name)
                 it.setData(Qt.UserRole, b.blockNumber())
                 self.outline.addItem(it)
-        self.outline.model().blockSignals(False)
         self.outline.blockSignals(False)
         self._beat_timer.start()
 
@@ -709,12 +733,14 @@ class MainWindow(QMainWindow):
             self.stats.setText(f"{f'{sel:,} selected · ' if sel else ''}{reports.word_count(sd):,} words · "
                                f"{len(w.scene_blocks())} scenes · ~{pages:.1f} / {target} pages · ≈ {runtime}")
             self.hint.setText(w.flow_hint())
+            self.focus_timer.set_words(reports.word_count(sd))
         elif isinstance(w, NovelEdit):
             words = w.word_count()
             sel = len(w.textCursor().selectedText().split())
             self.stats.setText(f"{f'{sel:,} selected · ' if sel else ''}{words:,} words · "
                                f"~{max(1, round(words / 250))} ms pages · ~{reports.fmt_runtime(words / 250)} read")
             self.hint.setText("Novel mode · lines starting with “# ” become chapters · *italic*")
+            self.focus_timer.set_words(words)
 
     def _target_changed(self, v):
         w = self.script_ed()
@@ -908,6 +934,90 @@ class MainWindow(QMainWindow):
             <p style="color:#888"><small>Celtx and Final Draft are trademarks of their respective owners.
             GORE DRAFT is independent and not affiliated with or endorsed by them.</small></p>""")
 
+    # =============================================================== zen
+    def _current_words(self) -> int:
+        w = self.ed()
+        if isinstance(w, ScriptEdit):
+            return reports.word_count(w.to_script())
+        if isinstance(w, NovelEdit):
+            return w.word_count()
+        return 0
+
+    def toggle_zen(self):
+        if not self.zen:
+            st = self._zen_state = {
+                "left": self.left_dock.isVisible(), "right": self.right_dock.isVisible(),
+                "full": self.isFullScreen(), "max": self.isMaximized(), "tab": self.tabs.currentIndex()}
+            self.zen = True
+            self.tabs.setCurrentIndex(TAB_SCRIPT)
+            for wdg in (self.menuBar(), self.toolbar, self.left_dock, self.right_dock,
+                        self.tabs.tabBar(), self.statusBar()):
+                wdg.hide()
+            self.desk.setStyleSheet("QWidget#DeskInner { background: #050406; }")
+            self.desk.layout().setContentsMargins(0, 40, 0, 0)
+            self.showFullScreen()
+            self.focus_timer.start_session(self._current_words())
+            self.a_timer.setChecked(True)
+            self._place_overlays()
+            self.zen_hint.flash()
+            w = self.ed()
+            if w:
+                w.setFocus()
+            _ = st
+        else:
+            st = self._zen_state
+            self.zen = False
+            for wdg in (self.menuBar(), self.toolbar, self.tabs.tabBar(), self.statusBar()):
+                wdg.show()
+            self.left_dock.setVisible(st.get("left", True))
+            self.right_dock.setVisible(st.get("right", True) and isinstance(self.ed(), ScriptEdit))
+            self.desk.setStyleSheet("")
+            self.desk.layout().setContentsMargins(0, 16, 0, 0)
+            if not st.get("full"):
+                self.showMaximized() if st.get("max") else self.showNormal()
+            self.tabs.setCurrentIndex(st.get("tab", TAB_SCRIPT))
+            self.zen_hint.hide()
+            if not self.focus_timer.running:
+                self.a_timer.setChecked(False)
+            self._place_overlays()
+
+    def _show_timer(self, on):
+        if on and not self.focus_timer.isVisible() and self.focus_timer.words_start == 0:
+            self.focus_timer.start_session(self._current_words())
+        self.focus_timer.setVisible(on)
+        self._place_overlays()
+
+    def _phase_finished(self, ended):
+        msg = "Focus session done. Take a break, stretch, hydrate." if ended == "work" \
+            else "Break's over. Back to the blood."
+        self.statusBar().showMessage(msg, 8000)
+        if not self.focus_timer.isVisible():
+            self.a_timer.setChecked(True)
+
+    def _place_overlays(self):
+        ft = self.focus_timer
+        if ft.isVisible():
+            ft.adjustSize()
+            ft.move(self.width() - ft.width() - 24,
+                    self.height() - ft.height() - (24 if self.zen else 40))
+            ft.raise_()
+        zh = self.zen_hint
+        zh.adjustSize()
+        zh.move((self.width() - zh.width()) // 2, 18)
+        if zh.isVisible():
+            zh.raise_()
+
+    def resizeEvent(self, e):
+        super().resizeEvent(e)
+        self._place_overlays()
+
+    def open_manual(self):
+        pdf = HERE / "manual" / "Read_This_Fucking_Manual.pdf"
+        if pdf.exists():
+            QDesktopServices.openUrl(QUrl.fromLocalFile(str(pdf)))
+        else:
+            QDesktopServices.openUrl(QUrl("https://github.com/splattervhs/GoreDraft/blob/main/docs/manual/Read_This_Fucking_Manual.pdf"))
+
     def closeEvent(self, e):
         if not self.confirm_discard():
             e.ignore()
@@ -968,7 +1078,7 @@ def main():
         splash.show()
         app.processEvents()
     started = time.monotonic()
-    app.setStyleSheet(QSS)
+    app.setStyleSheet(QSS + ZEN_QSS)
     w = MainWindow()
     if splash:
         # keep the splash up for at least ~1.5s so it doesn't just flicker

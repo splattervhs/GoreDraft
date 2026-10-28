@@ -483,9 +483,10 @@ class ScriptEdit(QTextEdit):
             a = el_menu.addAction(name)
             a.triggered.connect(lambda _=False, i=i: self.set_current_element(i))
         if sel:
-            tag = menu.addMenu(f"Tag “{sel[:28]}{'…' if len(sel) > 28 else ''}” as")
+            label = sel[:28].replace("&", "&&")
+            tag = menu.addMenu(f"Tag “{label}{'…' if len(sel) > 28 else ''}” as")
             for cat in CATEGORIES:
-                a = tag.addAction(cat)
+                a = tag.addAction(cat.replace("&", "&&"))
                 a.triggered.connect(lambda _=False, cat=cat, s=sel: self.tagRequested.emit(cat, s))
         menu.exec(e.globalPos())
 

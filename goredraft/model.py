@@ -27,7 +27,7 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 APP_NAME = "GORE DRAFT"
-APP_VERSION = "0.2.0"
+APP_VERSION = "0.2.1"
 PROJECT_EXT = ".goredraft"
 
 # ---------------------------------------------------------------- elements

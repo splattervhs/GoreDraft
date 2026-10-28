@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 PY=python3; [ -x .venv/bin/python ] && PY=.venv/bin/python
 $PY -m pip install -r requirements.txt pyinstaller
 $PY -m PyInstaller --noconfirm --windowed --name GoreDraft --icon goredraft/icon.png \
-  --add-data "goredraft/fonts:goredraft/fonts" --add-data "goredraft/icon.png:goredraft" --add-data "goredraft/splash.jpg:goredraft" --collect-data spellchecker run.py
+  --add-data "goredraft/fonts:goredraft/fonts" --add-data "goredraft/icon.png:goredraft" --add-data "goredraft/splash.jpg:goredraft" --add-data "goredraft/manual:goredraft/manual" --collect-data spellchecker run.py
 echo "Done: dist/GoreDraft/GoreDraft"
 
 # package: tarball with a launcher + desktop entry installer

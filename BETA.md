@@ -10,6 +10,10 @@ Thanks for testing. GORE DRAFT is a screenwriting app for practical horror filmm
 
 **Linux:** unpack `GoreDraft-x.y.z-linux-x86_64.tar.gz`, then run `GoreDraft/GoreDraft`. Run `GoreDraft/install.sh` to add it to your applications menu.
 
+## Stuck?
+
+Press **F1** inside the app to open *Read This Fucking Manual*. It's short and full of pictures.
+
 ## What to try
 
 1. **File → Import Old Celtx** (for Celtx 2 `.celtx` files), or import a Fountain or Final Draft script.

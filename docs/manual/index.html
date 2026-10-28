@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Read This Fucking Manual · GORE DRAFT</title>
+<style>
+  @font-face { font-family: "Anton"; src: url("fonts/Anton-Regular.ttf"); }
+  @font-face { font-family: "Courier Prime"; src: url("fonts/CourierPrime-Regular.ttf"); font-weight: 400; }
+  @font-face { font-family: "Courier Prime"; src: url("fonts/CourierPrime-Bold.ttf"); font-weight: 700; }
+  @font-face { font-family: "InterRTFM"; src: url("fonts/Inter-Regular.woff2") format("woff2"); font-weight: 400; }
+  @font-face { font-family: "InterRTFM"; src: url("fonts/Inter-SemiBold.woff2") format("woff2"); font-weight: 600; }
+  @font-face { font-family: "InterRTFM"; src: url("fonts/Inter-Bold.woff2") format("woff2"); font-weight: 700 900; }
+
+  :root {
+    --ink: #0c0a0e; --panel: #16121a; --blood: #d11a22; --blood-hi: #ff3b3b;
+    --label: #f1e6c8; --paper: #fdfcf8; --text: #1a1418; --dim: #6b5f65; --line: #e4dccf;
+  }
+  @page { size: A4; margin: 16mm 15mm 18mm 15mm; }
+  @page cover { margin: 0; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { margin: 0; }
+  body { background: #2a2228; color: var(--text); font: 10.5pt/1.55 InterRTFM, Inter, "Segoe UI", system-ui, sans-serif; }
+  img { max-width: 100%; display: block; }
+  .doc { max-width: 210mm; margin: 0 auto; background: var(--paper); }
+  .chapter, .back { padding: 14mm 15mm; }
+  .mono, kbd, code { font-family: "Courier Prime", "Courier New", monospace; }
+
+  /* ---------- cover ---------- */
+  .cover { page: cover; position: relative; height: 297mm; background: var(--ink); color: var(--label);
+           overflow: hidden; display: flex; flex-direction: column; }
+  .cover .art { height: 150mm; background: url("img/cover.jpg") center/cover; position: relative; }
+  .cover .art::after { content: ""; position: absolute; inset: 0;
+           background: linear-gradient(180deg, rgba(12,10,14,0) 55%, var(--ink) 100%); }
+  .cover .title { padding: 6mm 16mm 0; flex: 1; position: relative; }
+  .cover .kicker { font: 700 11pt "Courier Prime", monospace; letter-spacing: 4px; color: var(--blood-hi); }
+  .cover h1 { font: 400 54pt/0.95 Anton, Impact, sans-serif; margin: 4mm 0 0; text-transform: uppercase;
+              letter-spacing: 1px; color: var(--label); }
+  .cover h1 em { font-style: normal; color: var(--blood); }
+  .cover .sub { font-size: 13pt; color: #cfc4cb; max-width: 135mm; margin-top: 7mm; }
+  .cover .rtfm { position: absolute; right: 16mm; top: 0; transform: rotate(-10deg);
+                 border: 3px solid var(--blood); border-radius: 6px; padding: 2mm 5mm; text-align: center; }
+  .cover .rtfm b { display: block; font: 700 22pt "Courier Prime", monospace; letter-spacing: 6px; color: var(--blood-hi); }
+  .cover .rtfm span { font: 700 8pt "Courier Prime", monospace; letter-spacing: 2px; }
+  .cover .foot { padding: 0 16mm 12mm; display: flex; justify-content: space-between; align-items: end;
+                 font: 700 9pt "Courier Prime", monospace; letter-spacing: 2px; color: #9a8f98; }
+  .cover .foot b { color: var(--label); }
+
+  /* ---------- contents ---------- */
+  .contents { padding: 14mm 15mm; break-after: page; }
+  .contents ol { list-style: none; padding: 0; margin: 6mm 0 0; columns: 2; column-gap: 10mm; }
+  .contents li { break-inside: avoid; padding: 2.4mm 0; border-bottom: 1px dashed var(--line);
+                 display: flex; gap: 4mm; align-items: baseline; }
+  .contents li b { font: 400 20pt/1.1 Anton, sans-serif; color: var(--blood); min-width: 12mm; }
+  .contents li span { font-weight: 600; }
+  .contents li small { display: block; color: var(--dim); font-weight: 400; }
+
+  /* ---------- chapter furniture ---------- */
+  .chapter { break-before: page; }
+  .chap-head { display: flex; align-items: end; gap: 5mm; border-bottom: 3px solid var(--blood);
+               padding-bottom: 3mm; margin-bottom: 6mm; }
+  .chap-head .num { font: 400 46pt/1 Anton, sans-serif; color: var(--blood); }
+  .chap-head h2 { font: 400 26pt/1 Anton, Impact, sans-serif; text-transform: uppercase; margin: 0; letter-spacing: .5px; }
+  .chap-head p { margin: 1mm 0 0; color: var(--dim); font: 700 9pt "Courier Prime", monospace; letter-spacing: 1.5px; text-transform: uppercase; }
+  h3 { font: 700 12pt "Courier Prime", monospace; text-transform: uppercase; letter-spacing: 1px;
+       margin: 7mm 0 2mm; color: var(--text); }
+  h3::before { content: "■ "; color: var(--blood); }
+  p { margin: 0 0 3mm; }
+  ul, ol { margin: 0 0 3mm; padding-left: 5mm; }
+  li { margin-bottom: 1.2mm; }
+  b, strong { font-weight: 700; }
+
+  figure { margin: 4mm 0 5mm; break-inside: avoid; }
+  figure img { border: 1px solid #cfc6b8; border-radius: 3px; box-shadow: 0 2mm 5mm rgba(0,0,0,.12); }
+  figure.clip img { object-fit: cover; object-position: top; width: 100%; }
+  figcaption { font-size: 8.5pt; color: var(--dim); margin-top: 1.6mm; }
+  figcaption b { color: var(--blood); }
+  .tilt-l img { transform: rotate(-.7deg); } .tilt-r img { transform: rotate(.7deg); }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; align-items: start; }
+  .row.wide-left { grid-template-columns: 1.35fr 1fr; }
+  .row.wide-right { grid-template-columns: 1fr 1.35fr; }
+
+  kbd { display: inline-block; background: var(--ink); color: var(--label); border-radius: 3px;
+        padding: 0 1.6mm; font-size: 9pt; font-weight: 700; line-height: 1.5; border-bottom: 2px solid #000; }
+  .tip, .warn { break-inside: avoid; border-radius: 3px; padding: 3mm 4mm; margin: 4mm 0; font-size: 9.8pt; }
+  .tip { background: var(--label); border-left: 5px solid var(--blood); }
+  .tip::before { content: "PRO TIP  "; font: 700 8.5pt "Courier Prime", monospace; letter-spacing: 2px; color: var(--blood); }
+  .warn { background: var(--ink); color: var(--label); }
+  .warn::before { content: "HEADS UP  "; font: 700 8.5pt "Courier Prime", monospace; letter-spacing: 2px; color: var(--blood-hi); }
+
+  table { width: 100%; border-collapse: collapse; margin: 3mm 0 5mm; font-size: 9.5pt; break-inside: avoid; }
+  th { background: var(--ink); color: var(--label); text-align: left; padding: 1.6mm 2.4mm;
+       font: 700 8.5pt "Courier Prime", monospace; letter-spacing: 1px; text-transform: uppercase; }
+  td { padding: 1.6mm 2.4mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:nth-child(even) td { background: #f6f1e7; }
+
+  .callouts { list-style: none; padding: 0; margin: 2mm 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 6mm; }
+  .callouts li { display: flex; gap: 3mm; align-items: flex-start; font-size: 9.8pt; break-inside: avoid; }
+  .callouts li i { flex: none; width: 6.5mm; height: 6.5mm; border-radius: 50%; background: var(--blood); color: #fff;
+                   font: 700 10pt/6.5mm "Courier Prime", monospace; text-align: center; font-style: normal; }
+
+  .dance { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2mm; margin: 4mm 0; }
+  .dance div { background: var(--ink); color: var(--label); border-radius: 3px; padding: 2.4mm; text-align: center;
+               font: 700 8.5pt/1.3 "Courier Prime", monospace; }
+  .dance div small { display: block; color: var(--blood-hi); margin-top: 1mm; font-size: 8pt; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 1.6mm; margin: 2mm 0 4mm; }
+  .chips span { font: 700 8.5pt "Courier Prime", monospace; padding: 1mm 2.4mm; border-radius: 2px;
+                background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--c, #999); }
+
+  .files { background: var(--ink); color: var(--label); font: 9.5pt/1.8 "Courier Prime", monospace;
+           padding: 4mm 5mm; border-radius: 3px; break-inside: avoid; }
+  .files i { color: #9a8f98; font-style: normal; }
+
+  .cheat { break-before: page; padding: 14mm 15mm; }
+  .cheat .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8mm; }
+  .cheat table { font-size: 9pt; margin-top: 0; }
+  .cheat td:first-child { white-space: nowrap; width: 38%; }
+
+  .back { page: cover; break-before: page; background: var(--ink); color: var(--label); height: 297mm; padding: 30mm 18mm !important; }
+  .back h2 { font: 400 30pt/1 Anton, sans-serif; text-transform: uppercase; margin: 0 0 5mm; color: var(--label); }
+  .back h2 em { font-style: normal; color: var(--blood); }
+  .back p, .back li { color: #d8cfd4; }
+  .back a { color: var(--blood-hi); }
+  .back .small { font-size: 8.5pt; color: #8f8590; margin-top: 10mm; }
+
+  .pdfbar { max-width: 210mm; margin: 0 auto 4mm; display: flex; justify-content: space-between; padding: 0 2mm;
+            font: 700 10pt "Courier Prime", monospace; letter-spacing: 1px; }
+  .pdfbar a { color: #f1e6c8; text-decoration: none; } .pdfbar a:last-child { color: #ff3b3b; }
+  @media print {
+    .pdfbar { display: none; }
+    :root { --paper: #ffffff; }
+    body { background: #fff; }
+    .chapter, .contents, .cheat { padding: 0 !important; }
+    .doc { max-width: none; }
+  }
+  @media screen {
+    body { padding: 8mm 0; }
+    .doc { box-shadow: 0 0 40px rgba(0,0,0,.5); }
+    .chapter, .cheat, .back, .contents { border-top: 6px solid #2a2228; }
+  }
+  @media screen and (max-width: 700px) {
+    .row, .row.wide-left, .row.wide-right, .callouts, .cheat .grid { grid-template-columns: 1fr; }
+    .contents ol { columns: 1; }
+    .dance { grid-template-columns: 1fr 1fr; }
+    .cover h1 { font-size: 36pt; }
+    .chapter, .back, .cheat, .contents { padding: 8mm 5mm; }
+  }
+</style>
+</head>
+<body>
+<div class="pdfbar"><a href="../">← GORE DRAFT</a><a href="Read_This_Fucking_Manual.pdf" download>⬇ Download the PDF</a></div>
+<div class="doc">
+
+<!-- ================================================================ COVER -->
+<section class="cover">
+  <div class="art"></div>
+  <div class="title">
+    <div class="rtfm"><b>RTFM</b><span>BETA 0.2.1</span></div>
+    <div class="kicker">GORE DRAFT · THE OFFICIAL MANUAL</div>
+    <h1>Read This<br><em>Fucking</em><br>Manual</h1>
+    <p class="sub">Everything you need to write a horror script, break down every gag, and get it to set. Short chapters, lots of pictures, no padding.</p>
+  </div>
+  <div class="foot"><span>IDEAS / SCRIPTS / <b>FX BREAKDOWNS</b> / REAL FILMS</span><span>SPLATTERVHS.COM</span></div>
+</section>
+
+<!-- ================================================================ CONTENTS -->
+<section class="contents">
+  <div class="chap-head"><div class="num">00</div><div><h2>What's in here</h2><p>Skip to the bit you need</p></div></div>
+  <ol>
+    <li><b>01</b><span>Install it<small>Windows, Linux, Chromebook</small></span></li>
+    <li><b>02</b><span>The tour<small>What every bit of the screen does</small></span></li>
+    <li><b>03</b><span>Your first scene<small>The Tab and Enter dance</small></span></li>
+    <li><b>04</b><span>Bring your old scripts<small>Celtx, Final Draft, Fountain</small></span></li>
+    <li><b>05</b><span>The beat guide<small>Save the Cat, horror style</small></span></li>
+    <li><b>06</b><span>Break down the gore<small>Tagging every effect</small></span></li>
+    <li><b>07</b><span>Reports<small>Continuity, gag sheets, runtime</small></span></li>
+    <li><b>08</b><span>Cards &amp; reshuffling<small>Drag scenes around</small></span></li>
+    <li><b>09</b><span>Novels<small>The book of the film</small></span></li>
+    <li><b>10</b><span>Getting it out<small>PDF, Final Draft, Fountain</small></span></li>
+    <li><b>11</b><span>Your files<small>Where everything lives</small></span></li>
+    <li><b>12</b><span>Zen mode<small>Focus timer for wandering brains</small></span></li>
+    <li><b>13</b><span>When it breaks<small>Help, reports, AI note</small></span></li>
+    <li><b>☠</b><span>Cheat sheet<small>Tear it out, tape it up</small></span></li>
+  </ol>
+  <div class="tip">Short on time? Read chapters <b>03</b> and <b>06</b>. That's the whole point of GORE DRAFT: write the scene, then tag the blood.</div>
+</section>
+
+<!-- ================================================================ 01 INSTALL -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">01</div><div><h2>Install it</h2><p>Two minutes, one scary warning</p></div></div>
+  <div class="row wide-left">
+    <div>
+      <h3>Windows</h3>
+      <ol>
+        <li>Download <code>GoreDraft-Setup-0.2.0-beta.exe</code>.</li>
+        <li>Double-click it. Windows will probably say <b>"Windows protected your PC"</b>.</li>
+        <li>Click <b>More info → Run anyway</b>. The beta isn't code-signed yet, and that's the only reason Windows complains.</li>
+        <li>Choose <b>Install for me only</b> if you don't have admin rights. It works exactly the same.</li>
+        <li>Launch it from the Start Menu or the desktop shortcut.</li>
+      </ol>
+      <h3>Linux &amp; Chromebook</h3>
+      <ol>
+        <li>Download <code>GoreDraft-0.2.0-linux-x86_64.tar.gz</code> and unpack it.</li>
+        <li>Run <code>GoreDraft/GoreDraft</code>.</li>
+        <li>Optional: run <code>GoreDraft/install.sh</code> to add it to your apps menu.</li>
+      </ol>
+      <p><b>Chromebooks:</b> turn on Linux first (<i>Settings → Advanced → Developers → Linux development environment</i>). It needs an Intel or AMD processor, not ARM.</p>
+    </div>
+    <figure class="tilt-r"><img src="img/splash.jpg" alt=""><figcaption>The <b>BETA</b> stamp means you're early. Thanks for that.</figcaption></figure>
+  </div>
+  <div class="warn">No account. No sign-in. No internet needed, ever. If the app asks you to log in to anything, it isn't GORE DRAFT.</div>
+</section>
+
+<!-- ================================================================ 02 TOUR -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">02</div><div><h2>The tour</h2><p>Eight things on one screen</p></div></div>
+  <figure><img src="img/tour.jpg" alt="GORE DRAFT main window with numbered areas"></figure>
+  <ol class="callouts">
+    <li><i>1</i><div><b>Project library.</b> Every script and novel in this project. <b>+ Add</b> makes a new one, and double-clicking renames it.</div></li>
+    <li><i>2</i><div><b>Scenes.</b> Click to jump there. <b>Drag</b> to reorder. Red ◆ lines are beats.</div></li>
+    <li><i>3</i><div><b>Element.</b> What the current line is: heading, action, dialogue and so on. Change it here or with <kbd>Ctrl</kbd>+<kbd>1</kbd>–<kbd>8</kbd>.</div></li>
+    <li><i>4</i><div><b>The page.</b> A real screenplay page with real margins, so a page here is roughly a minute on screen.</div></li>
+    <li><i>5</i><div><b>Beat guide.</b> Which Save the Cat beat you're in, and whether you're on time.</div></li>
+    <li><i>6</i><div><b>Breakdown.</b> The effects, props and cast for the scene your cursor is in.</div></li>
+    <li><i>7</i><div><b>Tabs.</b> Script, Title Page, Index Cards, Scratchpad and Reports.</div></li>
+    <li><i>8</i><div><b>Status bar.</b> Words, scenes, pages and estimated <b>runtime</b>. Bottom-left tells you what Tab and Enter will do next.</div></li>
+  </ol>
+  <div class="tip">Panels in the way? <b>View</b> menu → untick Library or Breakdown, or press <kbd>F11</kbd> for Zen mode and lose everything but the page (chapter 12).</div>
+</section>
+
+<!-- ================================================================ 03 FIRST SCENE -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">03</div><div><h2>Your first scene</h2><p>The Tab &amp; Enter dance</p></div></div>
+  <div class="row wide-right">
+    <div>
+      <p>You never touch formatting. Two keys do it all: <kbd>Enter</kbd> starts the <b>next</b> line, and <kbd>Tab</kbd> changes <b>what kind</b> of line it is.</p>
+      <h3>Write a scene in 5 moves</h3>
+      <ol>
+        <li>Type <code>int. meat locker - night</code>. As soon as you type <code>INT.</code> it turns into a <b>Scene Heading</b>.</li>
+        <li><kbd>Enter</kbd> gives you <b>Action</b>. Describe the horror.</li>
+        <li><kbd>Tab</kbd> gives you a <b>Character</b>. Type their name.</li>
+        <li><kbd>Enter</kbd> gives you <b>Dialogue</b>. Make them talk.</li>
+        <li><kbd>Enter</kbd> gives you the next <b>Character</b>. Hit <kbd>Enter</kbd> again on the empty line to drop back to <b>Action</b>.</li>
+      </ol>
+    </div>
+    <figure class="clip"><img src="img/page.jpg" style="max-height:92mm" alt="A formatted screenplay page"><figcaption>All of this was typed with Tab and Enter. No formatting by hand.</figcaption></figure>
+  </div>
+  <div class="dance">
+    <div>SCENE HEADING<small>Enter ↓</small></div>
+    <div>ACTION<small>Tab ↓</small></div>
+    <div>CHARACTER<small>Enter ↓</small></div>
+    <div>DIALOGUE<small>Enter ↓</small></div>
+    <div>CHARACTER<small>Enter = Action</small></div>
+  </div>
+  <h3>The other moves</h3>
+  <ul>
+    <li><b>Parenthetical:</b> <kbd>Tab</kbd> straight after typing a character name gives you <code>( )</code>. <kbd>Tab</kbd> again jumps to the dialogue.</li>
+    <li><b>Transition:</b> type <code>CUT TO:</code> on an action line and it slides to the right by itself.</li>
+    <li><b>Wrong element?</b> On an empty line, keep pressing <kbd>Tab</kbd> to cycle through them, or press <kbd>Ctrl</kbd>+number. Bottom-left of the screen always says what <kbd>Tab</kbd> and <kbd>Enter</kbd> will do next.</li>
+  </ul>
+</section>
+
+<!-- ================================================================ 04 IMPORT -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">04</div><div><h2>Bring your old scripts</h2><p>Rescue the drawer</p></div></div>
+  <div class="row wide-right">
+    <figure><img src="img/file_menu.jpg" alt="File menu"><figcaption>Everything comes in and goes out through the <b>File</b> menu.</figcaption></figure>
+    <div>
+      <p>GORE DRAFT was born because we had dozens of horror scripts stuck in old Celtx desktop files. Yours can come with you too.</p>
+      <h3>Old Celtx (.celtx)</h3>
+      <ol>
+        <li><b>File → New Project</b>, then <b>File → Import Old Celtx</b>.</li>
+        <li>Pick your <code>.celtx</code> file.</li>
+        <li>Every script, novel and scratchpad comes in with its original names and order. Cast from your old catalog is tagged on the scenes too.</li>
+        <li><b>Save.</b> That's the moment your old work turns into plain files you own forever.</li>
+      </ol>
+      <h3>Final Draft &amp; Fountain</h3>
+      <p><b>File → Import Fountain / Final Draft</b> takes <code>.fdx</code>, <code>.fountain</code> and plain-text Fountain files.</p>
+    </div>
+  </div>
+  <div class="warn">Celtx sketches, storyboards and calendars contain no text, so they're skipped. Your words, scenes and scratchpads all come through.</div>
+</section>
+
+<!-- ================================================================ 05 BEATS -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">05</div><div><h2>The beat guide</h2><p>Save the Cat, with blood on it</p></div></div>
+  <div class="row wide-right">
+    <figure><img src="img/newdoc.jpg" alt="New document dialog"><figcaption><b>+ Add</b> → Screenplay → <b>Save the Cat beat sheet</b>. Set your target length.</figcaption></figure>
+    <div>
+      <p>Start a script from the beat sheet, or use <b>Script → Insert Save the Cat Beats</b> on one you've already started. You get <b>15 red markers</b>, each with its target page for your length, and an empty line ready under each.</p>
+      <p>The markers are a <b>guide only</b>. They never print, and they never end up in your PDF or Final Draft file.</p>
+      <h3>Jump between beats</h3>
+      <p><kbd>Ctrl</kbd>+<kbd>]</kbd> for the next beat, <kbd>Ctrl</kbd>+<kbd>[</kbd> for the previous one.</p>
+    </div>
+  </div>
+  <div class="row wide-left">
+    <figure><img src="img/beatguide.jpg" alt="Beat guide panel"><figcaption>The beat guide follows your cursor.</figcaption></figure>
+    <div>
+      <h3>Reading the guide</h3>
+      <ul>
+        <li><b>Aim:</b> where this beat should land.</li>
+        <li><b>You're on:</b> your actual page.</li>
+        <li><b style="color:#2da44e">on track</b> · <b style="color:#1f6feb">early</b> · <b style="color:#d11a22">running long</b></li>
+        <li>The grey italic line is the <b>horror version</b> of the beat: what it usually looks like in a horror film.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tip">"Running long" is a nudge, not a rule. FX set pieces eat pages, and that's fine. Change your target length in the beat guide if you're making a 60-pager.</div>
+</section>
+
+<!-- ================================================================ 06 BREAKDOWN -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">06</div><div><h2>Break down the gore</h2><p>The reason this app exists</p></div></div>
+  <p>Every scene gets a breakdown: every effect, prop, weapon and actor it needs. Put the cursor <b>anywhere in a scene</b> and the right-hand panel shows that scene.</p>
+  <div class="row wide-left">
+    <figure class="clip"><img src="img/tag_menu.jpg" style="max-height:88mm" alt="Right-click tag menu"><figcaption>Select the words, <b>right-click → Tag as</b>, and pick the type. Done.</figcaption></figure>
+    <div>
+      <h3>Fastest way: tag from the page</h3>
+      <ol>
+        <li>Select some words in the script, like <i>hot red spray</i>.</li>
+        <li><b>Right-click → Tag "…" as</b> and choose a category.</li>
+      </ol>
+      <h3>Full way: the panel</h3>
+      <ol>
+        <li>Pick a <b>Type</b>.</li>
+        <li>Type the <b>Item</b>: <i>Throat slash appliance</i>.</li>
+        <li>Pick <b>Who</b> wears or uses it. <b>This matters</b> for the continuity report.</li>
+        <li>Add <b>Notes</b>: repeats, blood quantity, rig details.</li>
+        <li><b>Add to scene</b>, or just press <kbd>Enter</kbd>.</li>
+      </ol>
+      <p>Click any cell in the list to edit it. <b>Remove</b> deletes the selected row.</p>
+    </div>
+  </div>
+  <h3>Effects come first</h3>
+  <div class="chips">
+    <span style="--c:#e0242b">Special Makeup FX</span><span style="--c:#ff5a36">Prosthetics &amp; Appliances</span>
+    <span style="--c:#a3000b">Blood &amp; Gore</span><span style="--c:#ff8c42">Wounds &amp; Continuity</span>
+    <span style="--c:#3fb950">Creature FX</span><span style="--c:#c678dd">Dummies &amp; Body Parts</span>
+    <span style="--c:#00d4ff">Animatronics</span><span style="--c:#d19a66">Practical / Mechanical FX</span>
+    <span style="--c:#9fb4c7">Fog &amp; Haze</span><span style="--c:#7c5cff">Drones</span><span style="--c:#ffb000">Pyro</span>
+  </div>
+  <p style="color:var(--dim);font-size:9.5pt">Below those come the usual production categories: props, weapons, wardrobe, hair &amp; makeup, cast, extras, stunts, vehicles, animals, set dressing, locations, sound FX, music, visual FX, special equipment and production notes.</p>
+  <div class="tip">Always fill in <b>Who</b> for makeup. "Throat wound, JENNY, carry to sc 4" is what lets the continuity report track her wound across the whole film, so you know how many appliances to run before day one. The scene's <b>synopsis</b> box also shows on its index card.</div>
+</section>
+
+<!-- ================================================================ 07 REPORTS -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">07</div><div><h2>Reports</h2><p>Paperwork for the workshop</p></div></div>
+  <p>Open the <b>Reports</b> tab and pick one from the list. Every report can be exported as a <b>PDF</b> or <b>HTML</b> to print, email or pin to the workshop wall.</p>
+  <div class="row">
+    <figure class="clip"><img src="img/rep_makeup.jpg" style="max-height:56mm" alt="SFX Makeup Continuity report"><figcaption><b>SFX Makeup Continuity.</b> Every makeup effect, grouped by character, in scene order.</figcaption></figure>
+    <figure class="clip"><img src="img/rep_gag.jpg" style="max-height:56mm" alt="Gag Sheet"><figcaption><b>Gag Sheet.</b> Every practical gag with Built, Tested and On set boxes. Print it and tick it off.</figcaption></figure>
+  </div>
+  <div class="row">
+    <figure class="clip"><img src="img/rep_runtime.jpg" style="max-height:56mm" alt="Runtime report"><figcaption><b>Runtime.</b> Each scene's length, time and start timecode. Effects scripts play long? Set <b>View → Minutes per Page</b> to 1.2.</figcaption></figure>
+    <figure class="clip"><img src="img/rep_beats.jpg" style="max-height:56mm" alt="Beat Sheet report"><figcaption><b>Beat Sheet.</b> Your structure against your actual pages.</figcaption></figure>
+  </div>
+  <table>
+    <tr><th>Report</th><th>Use it for</th></tr>
+    <tr><td><b>Scene Breakdown</b> (with or without description)</td><td>The 1st AD's favourite: every scene with its cast and all tagged items.</td></tr>
+    <tr><td><b>Elements</b></td><td>Shopping lists: all props, all weapons, all wardrobe and so on, each with the scenes they're in.</td></tr>
+    <tr><td><b>Dialogue</b></td><td>Every line per character, for casting and table reads. Filter by character.</td></tr>
+    <tr><td><b>Cast &amp; Scenes</b></td><td>Which scenes each actor is in, to plan shoot days.</td></tr>
+  </table>
+</section>
+
+<!-- ================================================================ 08 CARDS -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">08</div><div><h2>Cards &amp; reshuffling</h2><p>Move the bodies around</p></div></div>
+  <figure><img src="img/cards.jpg" alt="Index cards"><figcaption>Each card shows the scene's synopsis, its length, its beat and how many <b>FX</b> it needs.</figcaption></figure>
+  <div class="row">
+    <div>
+      <h3>Reorder scenes: three ways</h3>
+      <ul>
+        <li><b>Index Cards:</b> drag a card by its header (the <b>⠿</b> grip) onto another card. Drop it on the <b>left half</b> to go before, or the <b>right half</b> to go after.</li>
+        <li><b>Scenes list:</b> drag a scene up or down.</li>
+        <li><b>Keyboard:</b> <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>↑</kbd> / <kbd>↓</kbd> moves the scene your cursor is in.</li>
+      </ul>
+      <p>The scene's text, synopsis and whole breakdown move together. Changed your mind? <kbd>Ctrl</kbd>+<kbd>Z</kbd>.</p>
+    </div>
+    <div>
+      <h3>Title page &amp; scratchpad</h3>
+      <p><b>Title Page</b> holds your title, credit, author, draft, copyright and contact details. They print on the PDF's first page.</p>
+      <p><b>Scratchpad</b> is a notepad for each script: gag ideas, locations, shopping lists. It's saved with the script, and it's the yellow-paper bit you remember from the old days.</p>
+      <figure class="clip"><img src="img/scratch.jpg" style="max-height:42mm" alt="Scratchpad"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ 09 NOVELS -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">09</div><div><h2>Novels</h2><p>The book of the film (or the other way round)</p></div></div>
+  <figure><img src="img/novel.jpg" alt="Novel editor"><figcaption>Script and novelisation in one project, side by side in the library.</figcaption></figure>
+  <div class="row">
+    <div>
+      <p><b>+ Add → Novel / prose.</b> It's a clean page with no screenplay rules.</p>
+      <ul>
+        <li>Start a line with <code># </code> to make a <b>chapter</b>. Chapters appear in the sidebar, and you click one to jump to it.</li>
+        <li>Wrap words in <code>*stars*</code> for <i>italics</i>.</li>
+        <li>The status bar shows words, manuscript pages and reading time.</li>
+      </ul>
+    </div>
+    <div>
+      <p><b>Export PDF</b> gives you a manuscript with a title page. <b>Export Markdown</b> gives you a file that opens in almost anything, including Word, Google Docs, Scrivener and Obsidian.</p>
+      <p>The <b>Reports</b> tab shows <b>Manuscript Stats</b>: words per chapter.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ 10 EXPORT -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">10</div><div><h2>Getting it out</h2><p>For producers, actors and other apps</p></div></div>
+  <div class="row">
+    <figure class="tilt-l"><img src="img/pdfscript-1.jpg" alt="PDF title page"></figure>
+    <figure class="tilt-r"><img src="img/pdfscript-2.jpg" alt="PDF script page"></figure>
+  </div>
+  <table>
+    <tr><th>You want</th><th>Do this</th></tr>
+    <tr><td>A script to send people</td><td><b>File → Export PDF</b> (<kbd>Ctrl</kbd>+<kbd>P</kbd>). Choose A4 or US Letter under <b>File → PDF Page Size</b>.</td></tr>
+    <tr><td>To open it in Final Draft</td><td><b>File → Export Final Draft (.fdx)</b></td></tr>
+    <tr><td>To open it in Highland, Beat, WriterSolo…</td><td><b>File → Export Fountain</b></td></tr>
+    <tr><td>Novel to Word or Google Docs</td><td><b>File → Export Markdown</b></td></tr>
+    <tr><td>A report to the crew</td><td><b>Reports</b> tab → <b>Export PDF…</b></td></tr>
+  </table>
+  <div class="warn">Beta honesty: PDF page breaks are close to industry standard but not identical. They don't add (MORE)/(CONT'D) when dialogue splits across pages yet. Fine for drafts; check the PDF before it goes to a producer.</div>
+</section>
+
+<!-- ================================================================ 11 FILES -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">11</div><div><h2>Your files</h2><p>Yours. Forever. In plain text.</p></div></div>
+  <div class="row wide-right">
+    <div>
+      <p>When you first <b>Save</b>, GORE DRAFT makes a folder named after your project. Inside, everything is a <b>normal text file</b>.</p>
+      <ul>
+        <li><b>Scripts</b> are <code>.fountain</code> files, the open screenplay format. They open in Notepad.</li>
+        <li><b>Novels</b> are <code>.md</code> (Markdown) files.</li>
+        <li><b>Breakdowns</b> live inside the script as notes like <code>[[BD Blood &amp; Gore: …]]</code>. Other apps ignore them, so nothing breaks.</li>
+        <li><b>Backups</b> are written every 3 minutes while you have unsaved changes.</li>
+      </ul>
+      <p>To share a project, <b>zip the whole folder</b>. To back it up, copy the folder anywhere you like: USB stick, Google Drive, wherever.</p>
+    </div>
+    <div class="files">
+      📁 Meat Locker/<br>
+      &nbsp;&nbsp;Meat Locker.goredraft <i>← open this</i><br>
+      &nbsp;&nbsp;📁 docs/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;Meat_Locker.fountain<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;Meat_Locker_novelisation.md<br>
+      &nbsp;&nbsp;📁 scratch/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;Meat_Locker.txt<br>
+      &nbsp;&nbsp;📁 backups/ <i>← autosaves</i>
+    </div>
+  </div>
+  <h3>Spellcheck</h3>
+  <div class="row wide-left">
+    <figure><img src="img/spell.jpg" alt="Spellcheck suggestions"></figure>
+    <div>
+      <p>Red squiggle means a typo. <b>Right-click</b> it for suggestions, <b>Add to dictionary</b>, or <b>Ignore all</b>.</p>
+      <p>It uses Australian and British spelling, and it knows the jargon: squib, prosthetics, animatronic, hazer. It leaves your character names and ALL CAPS alone.</p>
+      <p><kbd>F7</kbd> turns it on or off.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ 12 ZEN -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">12</div><div><h2>Zen mode</h2><p>For brains that wander off mid-scene</p></div></div>
+  <figure class="clip"><img src="img/zen.jpg" style="max-height:78mm" alt="Zen mode"><figcaption>Press <b>F11</b>. Everything goes away except your page and the timer.</figcaption></figure>
+  <div class="row wide-right">
+    <div>
+      <h3>Go dark</h3>
+      <ul>
+        <li><kbd>F11</kbd> or <b>View → Zen Mode</b> goes full screen, black room, just the page.</li>
+        <li>Everything still works: <kbd>Tab</kbd>, <kbd>Enter</kbd>, spellcheck, <kbd>Ctrl</kbd>+<kbd>S</kbd>.</li>
+        <li><kbd>Esc</kbd> or <kbd>F11</kbd> brings the whole app back, exactly how you left it.</li>
+        <li>Timer without full screen? <b>View → Focus Timer</b> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd>).</li>
+      </ul>
+      <h3>The tomato timer</h3>
+      <ol>
+        <li>Hit <b>Start</b>. Write for <b>25 minutes</b>. Nothing else. No phone.</li>
+        <li>It beeps and flashes red. Take the <b>5-minute break</b>, then come back.</li>
+        <li>Every <b>4th</b> session (the ●●●● dots) you earn a <b>long break</b>.</li>
+      </ol>
+      <p><b>+words this session</b> counts what you've written since you sat down. It's proof the session counted.</p>
+    </div>
+    <div>
+      <figure style="margin:2mm 0"><img src="img/timer_focus.jpg" style="width:58mm" alt="Focus timer"><figcaption><b>Red</b> means write.</figcaption></figure>
+      <figure style="margin:2mm 0"><img src="img/timer_break.jpg" style="width:58mm" alt="Break timer"><figcaption><b style="color:#2da44e">Green</b> means step away.</figcaption></figure>
+      <table>
+        <tr><th>Button</th><th>Does</th></tr>
+        <tr><td>↺</td><td>Restart this timer</td></tr>
+        <tr><td>⏭</td><td>Skip to the next phase</td></tr>
+        <tr><td>⚙</td><td>25/5, 50/10 or 15/3 minutes</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ 12 HELP -->
+<section class="chapter">
+  <div class="chap-head"><div class="num">13</div><div><h2>When it breaks</h2><p>It's a beta. It will.</p></div></div>
+  <div class="row">
+    <div>
+      <h3>Report a problem</h3>
+      <p><b>Help → Report a Problem</b> opens an email to Splatter VHS with your version, your system and the error log already filled in. Just add:</p>
+      <ol>
+        <li>What you were doing.</li>
+        <li>What you expected to happen.</li>
+        <li>What actually happened.</li>
+      </ol>
+      <p>If GORE DRAFT crashes, an error box gives you the same <b>Report a Problem</b> button. Save your work first if you can.</p>
+      <p><b>Help → Open Log Folder</b> shows the raw log if anyone asks for it.</p>
+      <p>Lost this manual? <b>Help → Read This Fucking Manual</b>, or just press <kbd>F1</kbd>.</p>
+    </div>
+    <div>
+      <h3>Known beta limits</h3>
+      <ul>
+        <li>PDF page breaks are close to industry standard, not exact (see chapter 10).</li>
+        <li>No revision colours or locked pages yet.</li>
+        <li>Celtx sketches and storyboards aren't imported.</li>
+        <li>No Mac version yet.</li>
+      </ul>
+      <h3>About AI</h3>
+      <p>GORE DRAFT's code was built with Claude, an AI coding assistant. <b>The app itself contains no AI.</b> It never writes, suggests or analyses your work, it never goes online, and your scripts never leave your computer.</p>
+    </div>
+  </div>
+  <div class="tip">The best bug report is a screenshot plus one sentence. "I dragged scene 4 onto scene 2 and scene 3 vanished" gets fixed in a day. "It's broken" doesn't.</div>
+</section>
+
+<!-- ================================================================ CHEAT SHEET -->
+<section class="cheat">
+  <div class="chap-head"><div class="num">☠</div><div><h2>Cheat sheet</h2><p>Print this page. Tape it to the monitor.</p></div></div>
+  <div class="grid">
+    <div>
+      <table>
+        <tr><th colspan="2">Writing</th></tr>
+        <tr><td><kbd>Enter</kbd></td><td>Next line, logical next element</td></tr>
+        <tr><td><kbd>Tab</kbd></td><td>Next element type / change this line</td></tr>
+        <tr><td><kbd>Shift</kbd>+<kbd>Tab</kbd></td><td>Previous element type</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>1</kbd></td><td>Scene Heading</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>2</kbd></td><td>Action</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>3</kbd></td><td>Character</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>4</kbd></td><td>Parenthetical</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>5</kbd></td><td>Dialogue</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>6</kbd></td><td>Transition</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>7</kbd></td><td>Shot</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>8</kbd></td><td>Beat marker</td></tr>
+        <tr><td><code>INT.</code> / <code>EXT.</code></td><td>Auto Scene Heading</td></tr>
+        <tr><td><code>… TO:</code></td><td>Auto Transition</td></tr>
+      </table>
+      <table>
+        <tr><th colspan="2">Moving around</th></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>]</kbd> / <kbd>[</kbd></td><td>Next / previous beat</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>↑</kbd><kbd>↓</kbd></td><td>Move this scene</td></tr>
+        <tr><td>Click a scene</td><td>Jump to it</td></tr>
+        <tr><td>Drag a scene / card</td><td>Reorder</td></tr>
+      </table>
+    </div>
+    <div>
+      <table>
+        <tr><th colspan="2">Files</th></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>N</kbd></td><td>New project</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>O</kbd></td><td>Open project</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>S</kbd></td><td>Save</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd></td><td>Save as</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>N</kbd></td><td>Add script or novel</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>P</kbd></td><td>Export PDF</td></tr>
+      </table>
+      <table>
+        <tr><th colspan="2">Breakdown</th></tr>
+        <tr><td>Select → right-click</td><td>Tag as an effect, prop…</td></tr>
+        <tr><td><kbd>Enter</kbd> in Item/Notes</td><td>Add to scene</td></tr>
+        <tr><td>Click a cell</td><td>Edit it</td></tr>
+        <tr><td>Fill in <b>Who</b></td><td>Makes makeup continuity work</td></tr>
+      </table>
+      <table>
+        <tr><th colspan="2">Everything else</th></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd></td><td>Undo / redo (moves too)</td></tr>
+        <tr><td><kbd>F11</kbd> / <kbd>Esc</kbd></td><td>Zen mode on / off</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd></td><td>Focus timer</td></tr>
+        <tr><td><kbd>F1</kbd></td><td>This manual</td></tr>
+        <tr><td><kbd>F7</kbd></td><td>Spellcheck on/off</td></tr>
+        <tr><td>Right-click a squiggle</td><td>Suggestions, add word</td></tr>
+        <tr><td>View → Minutes per Page</td><td>Tune the runtime estimate</td></tr>
+        <tr><td>Help → Report a Problem</td><td>Tell us what broke</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ BACK -->
+<section class="back">
+  <h2>Now go write <em>something horrible.</em></h2>
+  <p>GORE DRAFT is free, it's in beta, and it's made by one horror filmmaker in Brisbane who got tired of renting his own scripts back from the cloud. If it helped you get a scene on set, we want to see it.</p>
+  <ul>
+    <li><b>Website &amp; films:</b> <a href="https://splattervhs.com">splattervhs.com</a></li>
+    <li><b>Downloads &amp; updates:</b> github.com/splattervhs/GoreDraft</li>
+    <li><b>Bugs &amp; ideas:</b> Help → Report a Problem, inside the app</li>
+  </ul>
+  <p class="small">GORE DRAFT is a Splatter VHS production. Script font: Courier Prime; heading font: Anton (both SIL Open Font License). Beat structure after Blake Snyder's <i>Save the Cat</i>; guide text is original. Celtx and Final Draft are trademarks of their respective owners. GORE DRAFT is independent and not affiliated with or endorsed by them.</p>
+</section>
+
+</div>
+</body>
+</html>

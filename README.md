@@ -36,6 +36,7 @@ We had dozens of horror screenplays written in the old Celtx desktop app, and we
 - **Classic desktop feel.** Tab and Enter element flow, index cards, scratchpad, title page, reports. **Imports Celtx 2 (`.celtx`), Final Draft (`.fdx`) and Fountain**, so your old scripts come with you.
 - **Novels too.** Keep the script and the novelisation in one project.
 - **Runtime, word count, spellcheck.** It knows Australian spelling and effects vocabulary.
+- **Zen mode + focus timer.** <kbd>F11</kbd> leaves just you and the page, with a pomodoro timer and a count of the words you write this session.
 - **Your work is yours.** Projects are plain Fountain and Markdown files in a folder you choose. No account, no cloud, no subscription. If GORE DRAFT vanished tomorrow, your scripts would still open in Notepad.
 
 <p align="center">
@@ -48,6 +49,12 @@ We had dozens of horror screenplays written in the old Celtx desktop app, and we
 GORE DRAFT's code was built with **Claude**, an AI coding assistant. The ideas, the effects categories and the horror filmmaking knowledge come from Splatter VHS, and Claude helped write the software.
 
 **The app itself contains no AI.** It never writes, suggests, rewrites or analyses your work. It never connects to the internet, and **your scripts never leave your computer.** Nothing you write in GORE DRAFT can be used to train anything.
+
+## 📕 Read This Fucking Manual
+
+The manual is short and full of pictures. Open it from inside the app with **Help → Read This Fucking Manual** (<kbd>F1</kbd>), [read it online](https://splattervhs.github.io/GoreDraft/manual/), or grab the [PDF](docs/manual/Read_This_Fucking_Manual.pdf).
+
+<p align="center"><a href="docs/manual/Read_This_Fucking_Manual.pdf"><img src="docs/manual/img/zen.jpg" alt="Zen mode" width="100%"></a></p>
 
 ## Beta testers
 
