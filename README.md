@@ -10,7 +10,7 @@
 
 # GORE DRAFT
 
-**Screenwriting for practical horror filmmakers.** A desktop script and novel writer for Windows and Linux, built the way old Celtx used to work, around the thing other screenwriting apps ignore: **the effects.**
+**Screenwriting for practical horror filmmakers.** A desktop script and novel writer for Windows and Linux, built the way classic desktop screenwriting apps used to work, around the thing other screenwriting apps ignore: **the effects.**
 
 Made by [Splatter VHS](https://splattervhs.com), a horror filmmaker with 20+ years in practical SFX who got tired of his screenwriting software turning into a subscription.
 
@@ -31,7 +31,7 @@ Made by [Splatter VHS](https://splattervhs.com), a horror filmmaker with 20+ yea
 - **SFX Makeup Continuity report.** Every wound, every character, in scene order, so you can count your repeats before you're on set.
 - **Gag Sheet.** A printable workshop checklist with Built, Tested and On set boxes for every gag.
 - **Save the Cat beat guide.** Pre-filled beats with target pages, and a live "you're running long" warning, with a horror note on every beat.
-- **Old-Celtx feel.** Tab and Enter element flow, index cards, scratchpad, title page, reports. **Imports old Celtx 2 `.celtx` projects**, as well as Final Draft and Fountain.
+- **Classic desktop feel.** Tab and Enter element flow, index cards, scratchpad, title page, reports. **Imports Celtx 2 (`.celtx`), Final Draft (`.fdx`) and Fountain**, so your old scripts come with you.
 - **Novels too.** Keep the script and the novelisation in one project.
 - **Runtime, word count, spellcheck.** It knows Australian spelling and effects vocabulary.
 - **Your work is yours.** Projects are plain Fountain and Markdown files in a folder you choose. No account, no cloud, no subscription. If GORE DRAFT vanished tomorrow, your scripts would still open in Notepad.
@@ -98,7 +98,7 @@ If the repository is private, testers need GitHub accounts and access. If that's
 
 | Tab | What it does |
 |---|---|
-| **Script** | Screenplay page with Celtx-style element flow (see keys below) |
+| **Script** | Screenplay page with Tab/Enter element flow (see keys below) |
 | **Title Page** | Title, credit, author, based on, draft, copyright, contact |
 | **Index Cards** | One card per scene. Edit synopses, see the beat and FX count, click Go to jump |
 | **Scratchpad** | Free notes per document, saved alongside it |
@@ -217,3 +217,5 @@ Script font: Courier Prime (SIL Open Font License, see `goredraft/fonts/OFL.txt`
 <p align="center">
   <b>GORE DRAFT</b> is a <a href="https://splattervhs.com">Splatter VHS</a> production. Ideas / Scripts / FX Breakdowns / Real Films.
 </p>
+
+<sub>Celtx and Final Draft are trademarks of their respective owners. GORE DRAFT is an independent app and is not affiliated with or endorsed by them; it can import their file formats so your old work isn't stranded.</sub>

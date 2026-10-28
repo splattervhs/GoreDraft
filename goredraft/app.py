@@ -904,7 +904,9 @@ class MainWindow(QMainWindow):
             No accounts, no cloud, no subscription. If this app disappears tomorrow,
             your scripts still open in Notepad.</p>
             <p>Script font: Courier Prime (SIL Open Font License).<br>
-            Beat structure after Blake Snyder's <i>Save the Cat</i>.</p>""")
+            Beat structure after Blake Snyder's <i>Save the Cat</i>.</p>
+            <p style="color:#888"><small>Celtx and Final Draft are trademarks of their respective owners.
+            GORE DRAFT is independent and not affiliated with or endorsed by them.</small></p>""")
 
     def closeEvent(self, e):
         if not self.confirm_discard():

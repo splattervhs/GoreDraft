@@ -12,7 +12,7 @@ Thanks for testing. GORE DRAFT is a screenwriting app for practical horror filmm
 
 ## What to try
 
-1. **File → Import Old Celtx**, or import a Fountain or Final Draft script.
+1. **File → Import Old Celtx** (for Celtx 2 `.celtx` files), or import a Fountain or Final Draft script.
 2. Write a scene. Tab and Enter move between elements, and Help → Keyboard Flow has the map.
 3. Tag some effects in the Breakdown panel, then look at **Reports → SFX Makeup Continuity** and **Gag Sheet**.
 4. **Export PDF** and check it looks like a script.
@@ -24,3 +24,7 @@ Use **Help → Report a Problem**. It collects version info and the error log fo
 ## Your work is safe
 
 Projects are plain Fountain (`.fountain`) and Markdown (`.md`) files in a folder you choose. Even if this beta dies completely, your scripts open in any text editor. It's still a beta, so keep your own backups of anything important.
+
+---
+
+<sub>Celtx and Final Draft are trademarks of their respective owners. GORE DRAFT is an independent app and is not affiliated with or endorsed by them; it can import their file formats so your old work isn't stranded.</sub>
