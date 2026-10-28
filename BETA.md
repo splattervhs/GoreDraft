@@ -1,0 +1,26 @@
+# GORE DRAFT beta
+
+Thanks for testing. GORE DRAFT is a screenwriting app for practical horror filmmakers. It does scripts, novels, SFX and makeup breakdowns, and Save the Cat beats, and saves everything as plain files you own.
+
+## Install
+
+**Windows:** run `GoreDraft-Setup-x.y.z.exe`.
+- Windows will probably say *"Windows protected your PC"*. That's because the app isn't code-signed yet, not because something's wrong. Click **More info → Run anyway**.
+- No admin rights? Choose **"Install for me only"**.
+
+**Linux:** unpack `GoreDraft-x.y.z-linux-x86_64.tar.gz`, then run `GoreDraft/GoreDraft`. Run `GoreDraft/install.sh` to add it to your applications menu.
+
+## What to try
+
+1. **File → Import Old Celtx**, or import a Fountain or Final Draft script.
+2. Write a scene. Tab and Enter move between elements, and Help → Keyboard Flow has the map.
+3. Tag some effects in the Breakdown panel, then look at **Reports → SFX Makeup Continuity** and **Gag Sheet**.
+4. **Export PDF** and check it looks like a script.
+
+## When something breaks
+
+Use **Help → Report a Problem**. It collects version info and the error log for you. Tell us what you were doing and what you expected to happen.
+
+## Your work is safe
+
+Projects are plain Fountain (`.fountain`) and Markdown (`.md`) files in a folder you choose. Even if this beta dies completely, your scripts open in any text editor. It's still a beta, so keep your own backups of anything important.

@@ -1,0 +1,22 @@
+{
+  "app": "GORE DRAFT",
+  "version": "0.1.0",
+  "name": "Meat Locker",
+  "docs": [
+    {
+      "id": "e6ab9d8b00",
+      "name": "Meat Locker",
+      "kind": "screenplay",
+      "file": "docs/Screenplay.fountain"
+    },
+    {
+      "id": "b0db80be23",
+      "name": "Meat Locker (novelisation)",
+      "kind": "novel",
+      "file": "docs/Meat_Locker_novelisation.md",
+      "title": {
+        "title": "Meat Locker (novelisation)"
+      }
+    }
+  ]
+}
